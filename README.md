@@ -8,13 +8,12 @@ A modern, user-friendly interface for extracting audio from videos using ffmpeg 
 
 - 🎵 **Extract audio from local video files** - Support for all major video formats
 - 🌐 **Download audio from URLs** - YouTube, Vimeo, and many other platforms
-- ⏱️ **Time range extraction** - Extract specific segments with start/end times or duration
+- ⏱️ **Time range extraction** - Extract specific segments with millisecond precision
 - 🎛️ **Multiple audio formats** - MP3, WAV, FLAC, AAC support
 - 🎚️ **Quality options** - High, medium, and low quality settings
 - 🖥️ **Dual interfaces** - Modern GUI and powerful CLI
-- 🔧 **Direct core access** - Use original CLI via `--core-cli` option
 - 📁 **Custom output paths** - Specify custom output directories and filenames
-- 🚀 **Easy setup** - One-command environment activation
+- 🚀 **Easy installation** - Windows executable with automated FFmpeg setup
 - 📦 **Cross-platform** - Windows, macOS, and Linux support
 
 ## 📥 Download
@@ -41,6 +40,33 @@ Get the latest pre-built version for immediate use:
 - `install_ffmpeg.ps1` - PowerShell installer
 - `QUICK_START.md` - User guide
 - `README.md` & `LICENSE` - Documentation
+
+---
+
+## 📱 Interface Overview
+
+### File Extraction Tab
+- Browse and select local video files
+- Choose output format (MP3, WAV, FLAC, AAC)
+- Select quality settings
+- Set time range (start time, end time, or duration)
+- Custom output path and filename
+- Progress tracking
+
+### URL Extraction Tab
+- Enter video URLs from supported platforms
+- Same format and quality options
+- Time range extraction support
+- Custom output path and filename
+- Download progress indication
+
+### Time Format Examples
+```
+1:30        # 1 minute 30 seconds
+90          # 90 seconds
+1:23.456    # 1 min 23 sec 456 milliseconds
+00:01:30.500 # Same as above, full format
+```
 
 ---
 
@@ -172,24 +198,7 @@ python src/main.py --core-cli --format mp3 url "https://www.youtube.com/watch?v=
 python src/main.py --core-cli check-dependencies
 ```
 
-### Features Overview
-
-#### File Extraction Tab
-
-- Browse and select local video files
-- Choose output format (MP3, WAV, FLAC, AAC)
-- Select quality settings
-- Set time range (start time, end time, or duration)
-- Custom output path and filename
-- Progress tracking
-
-#### URL Extraction Tab
-
-- Enter video URLs from supported platforms
-- Same format and quality options
-- Time range extraction support
-- Custom output path and filename
-- Download progress indication
+---
 
 ## 🛠️ Development
 
@@ -382,6 +391,8 @@ This project uses several tools to maintain code quality:
 
 All tools are configured in `pyproject.toml`.
 
+---
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -391,3 +402,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) - For video downloading capabilities
 - [FFmpeg](https://ffmpeg.org/) - For audio/video processing
 - [tkinter](https://docs.python.org/3/library/tkinter.html) - For GUI framework
+
+---
+
+**Made with ❤️ by [Steven Aubertin](https://github.com/stevenaubertin)**
