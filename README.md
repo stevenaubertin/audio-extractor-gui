@@ -17,9 +17,42 @@ A modern, user-friendly interface for extracting audio from videos using ffmpeg 
 - 🚀 **Easy setup** - One-command environment activation
 - 📦 **Cross-platform** - Windows, macOS, and Linux support
 
+## 📥 Download
+
+### Ready-to-Use Releases
+
+Get the latest pre-built version for immediate use:
+
+**🖥️ Windows Executable (Recommended for End Users)**
+- **[Download v0.1.0](https://github.com/stevenaubertin/audio-extractor-gui/releases/tag/v0.1.0)**
+- Single executable file (~22 MB)
+- No Python installation required
+- Includes FFmpeg installation scripts
+- Just download, install FFmpeg, and run!
+
+**🐍 Python Package (For Developers)**
+- Install via pip: `pip install audio-extractor-ui`
+- Requires Python 3.8+ and dependencies
+- Full source code access
+
+### What's Included in Windows Release:
+- `AudioExtractorUI.exe` - Main application
+- `install_ffmpeg.bat` - Easy FFmpeg installer
+- `install_ffmpeg.ps1` - PowerShell installer
+- `QUICK_START.md` - User guide
+- `README.md` & `LICENSE` - Documentation
+
+---
+
 ## 🚀 Quick Start
 
-### Prerequisites
+### For End Users (Windows)
+
+💡 **Want to skip the setup?** Download the [Windows executable](https://github.com/stevenaubertin/audio-extractor-gui/releases/tag/v0.1.0) and follow the `QUICK_START.md` guide!
+
+### For Developers (Source Installation)
+
+#### Prerequisites
 
 - Python 3.8 or higher
 - FFmpeg installed and available in PATH
@@ -49,7 +82,7 @@ sudo apt update
 sudo apt install ffmpeg
 ```
 
-### Installation
+#### Installation from Source
 
 1. **Clone the repository with submodules:**
 
