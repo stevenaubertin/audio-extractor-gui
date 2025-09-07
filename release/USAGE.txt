@@ -1,0 +1,22 @@
+# Audio Extractor UI - Windows Release
+
+## Usage:
+1. Double-click AudioExtractorUI.exe to launch the graphical interface
+2. Or run from command line with options:
+   - AudioExtractorUI.exe --help (show help)
+   - AudioExtractorUI.exe --gui (default GUI mode)
+   - AudioExtractorUI.exe --cli (command line interface)
+
+## Requirements:
+- FFmpeg must be installed and available in PATH for audio extraction
+- Download FFmpeg from: https://ffmpeg.org/download.html
+
+## Features:
+- Extract audio from local video files
+- Download and extract audio from URLs (YouTube, etc.)
+- Support for MP3, WAV, FLAC, AAC formats
+- Time range extraction with millisecond precision
+- Custom output paths and filenames
+
+## Support:
+- GitHub: https://github.com/stevenaubertin/audio-extractor-gui
