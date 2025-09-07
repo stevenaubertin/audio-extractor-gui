@@ -1,6 +1,7 @@
 # Core dependencies for Audio Extractor UI
+# Note: Audio processing dependencies are shared with the audio-extractor submodule
 
-# Audio/Video processing
+# Audio/Video processing (shared with audio-extractor submodule)
 yt-dlp>=2024.1.0
 ffmpeg-python>=0.2.0
 

@@ -2,13 +2,18 @@
 
 A modern, user-friendly interface for extracting audio from videos using ffmpeg and yt-dlp.
 
+**🔗 Integrated with [audio-extractor](https://github.com/stevenaubertin/audio-extractor)** - Uses the proven core functionality as a git submodule for reliable audio extraction.
+
 ## ✨ Features
 
 - 🎵 **Extract audio from local video files** - Support for all major video formats
 - 🌐 **Download audio from URLs** - YouTube, Vimeo, and many other platforms
+- ⏱️ **Time range extraction** - Extract specific segments with start/end times or duration
 - 🎛️ **Multiple audio formats** - MP3, WAV, FLAC, AAC support
 - 🎚️ **Quality options** - High, medium, and low quality settings
-- 🖥️ **Dual interfaces** - Both GUI and CLI available
+- 🖥️ **Dual interfaces** - Modern GUI and powerful CLI
+- 🔧 **Direct core access** - Use original CLI via `--core-cli` option
+- 📁 **Batch processing** - Process multiple files at once
 - 🚀 **Easy setup** - One-command environment activation
 - 📦 **Cross-platform** - Windows, macOS, and Linux support
 
@@ -43,11 +48,16 @@ sudo apt install ffmpeg
 
 ### Installation
 
-1. **Clone the repository:**
+1. **Clone the repository with submodules:**
 ```bash
-git clone https://github.com/yourusername/audio-extractor-ui.git
+git clone --recursive https://github.com/yourusername/audio-extractor-ui.git
 cd audio-extractor-ui
 ```
+
+   **Or if you already cloned without `--recursive`:**
+   ```bash
+   git submodule update --init --recursive
+   ```
 
 2. **Activate the environment** (choose your platform):
 
@@ -93,6 +103,28 @@ Use the command-line interface:
 python src/main.py --cli
 ```
 
+### Core CLI Mode (Direct Access)
+
+Access the original audio-extractor CLI directly:
+```bash
+python src/main.py --core-cli
+```
+
+Example core CLI usage:
+```bash
+# Extract audio from local file
+python src/main.py --core-cli --format mp3 --quality high local "video.mp4"
+
+# Extract with time range
+python src/main.py --core-cli --format mp3 local "video.mp4" --start-time 1:30 --duration 2:00
+
+# Download from YouTube
+python src/main.py --core-cli --format mp3 url "https://www.youtube.com/watch?v=VIDEO_ID"
+
+# Check dependencies
+python src/main.py --core-cli check-dependencies
+```
+
 ### Features Overview
 
 #### File Extraction Tab
@@ -127,15 +159,26 @@ pre-commit install
 ```
 audio-extractor-ui/
 ├── src/
+│   ├── main.py                  # Application entry point
 │   └── audio_extractor_ui/
 │       ├── __init__.py          # Package initialization
-│       ├── main.py              # Application entry point
 │       ├── core.py              # Core audio extraction logic
+│       ├── integration.py       # Submodule integration layer
 │       ├── gui.py               # GUI interface
 │       ├── cli.py               # CLI interface
 │       └── utils.py             # Utility functions
+├── audio-extractor/             # Git submodule
+│   ├── src/
+│   │   └── extract_audio.py     # Core extraction CLI
+│   ├── requirements.txt         # Core dependencies
+│   └── README.md                # Core documentation
 ├── tests/
 │   └── test_core.py             # Unit tests
+├── .vscode/                     # VSCode configuration
+│   ├── settings.json            # Editor settings
+│   ├── launch.json              # Debug configurations
+│   ├── tasks.json               # Build tasks
+│   └── extensions.json          # Recommended extensions
 ├── docs/                        # Documentation
 ├── scripts/                     # Development scripts
 ├── activate.ps1                 # Windows PowerShell activation
@@ -144,6 +187,7 @@ audio-extractor-ui/
 ├── requirements.txt             # Production dependencies
 ├── requirements-dev.txt         # Development dependencies
 ├── pyproject.toml              # Project configuration
+├── .gitmodules                  # Git submodule configuration
 └── README.md                   # This file
 ```
 
