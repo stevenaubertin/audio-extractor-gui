@@ -330,17 +330,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Feature requests:** [GitHub Issues](https://github.com/yourusername/audio-extractor-ui/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/yourusername/audio-extractor-ui/discussions)
 
-## 📈 Roadmap
-
-- [ ] Time range extraction (start/end times)
-- [ ] Batch processing for multiple files
-- [ ] Custom output naming patterns
-- [ ] Audio metadata preservation
-- [ ] Web interface version
-- [ ] Plugin system for custom extractors
-- [ ] Audio preview functionality
-- [ ] Drag and drop file support
-
 ---
 
 Made with ❤️ by [Your Name](https://github.com/yourusername)
