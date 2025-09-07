@@ -123,7 +123,7 @@ class AudioExtractorGUI:
         # Help text for time formats
         ttk.Label(
             parent, 
-            text="Format: HH:MM:SS, MM:SS, or seconds (e.g., 1:30, 90.5). Use End OR Duration, not both."
+            text="Format: HH:MM:SS.mmm, MM:SS.mmm, or seconds (e.g., 1:30.500, 90.250). Use End OR Duration, not both."
         ).pack(anchor="w", pady=(0, 10))
 
         # Output path selection
@@ -221,7 +221,7 @@ class AudioExtractorGUI:
         # Help text for time formats
         ttk.Label(
             parent, 
-            text="Format: HH:MM:SS, MM:SS, or seconds (e.g., 1:30, 90.5). Use End OR Duration, not both."
+            text="Format: HH:MM:SS.mmm, MM:SS.mmm, or seconds (e.g., 1:30.500, 90.250). Use End OR Duration, not both."
         ).pack(anchor="w", pady=(0, 10))
 
         # Output path selection
@@ -277,13 +277,14 @@ class AudioExtractorGUI:
         if (end_time or duration) and not start_time:
             return (False, "Start time is required when specifying End time or Duration.", None, None, None)
         
-        # Basic format validation (more detailed validation happens in the core)
+        # Basic format validation with millisecond precision support (more detailed validation happens in the core)
         import re
-        time_pattern = r'^(?:\d{1,2}:)?\d{1,2}:\d{1,2}$|^\d+(?:\.\d+)?$'
+        # Updated pattern to support millisecond precision: HH:MM:SS.mmm, MM:SS.mmm, SS.mmm, or decimal seconds
+        time_pattern = r'^(?:(?:\d{1,2}:)?\d{1,2}:\d{1,2}(?:\.\d{1,3})?)|(?:\d+(?:\.\d{1,3})?)$'
         
         for time_val, name in [(start_time, "Start time"), (end_time, "End time"), (duration, "Duration")]:
             if time_val and not re.match(time_pattern, time_val):
-                return (False, f"{name} format invalid. Use HH:MM:SS, MM:SS, or seconds.", None, None, None)
+                return (False, f"{name} format invalid. Use HH:MM:SS.mmm, MM:SS.mmm, or seconds with optional millisecond precision.", None, None, None)
         
         return (True, None, start_time, end_time, duration)
     
