@@ -1,0 +1,16 @@
+# Core dependencies for Audio Extractor UI
+
+# Audio/Video processing
+yt-dlp>=2024.1.0
+ffmpeg-python>=0.2.0
+
+# CLI utilities
+click>=8.0.0
+colorama>=0.4.4
+
+# GUI (tkinter is usually included with Python, but adding alternatives)
+# tkinter comes with Python by default
+
+# Utilities
+requests>=2.25.0
+pathlib2>=2.3.0; python_version < "3.4"
