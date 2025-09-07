@@ -13,7 +13,7 @@ A modern, user-friendly interface for extracting audio from videos using ffmpeg 
 - 🎚️ **Quality options** - High, medium, and low quality settings
 - 🖥️ **Dual interfaces** - Modern GUI and powerful CLI
 - 🔧 **Direct core access** - Use original CLI via `--core-cli` option
-- 📁 **Batch processing** - Process multiple files at once
+- 📁 **Custom output paths** - Specify custom output directories and filenames
 - 🚀 **Easy setup** - One-command environment activation
 - 📦 **Cross-platform** - Windows, macOS, and Linux support
 
@@ -50,8 +50,8 @@ sudo apt install ffmpeg
 
 1. **Clone the repository with submodules:**
 ```bash
-git clone --recursive https://github.com/yourusername/audio-extractor-ui.git
-cd audio-extractor-ui
+git clone --recursive https://github.com/stevenaubertin/audio-extractor-gui.git
+cd audio-extractor-gui
 ```
 
    **Or if you already cloned without `--recursive`:**
@@ -131,11 +131,15 @@ python src/main.py --core-cli check-dependencies
 - Browse and select local video files
 - Choose output format (MP3, WAV, FLAC, AAC)
 - Select quality settings
+- Set time range (start time, end time, or duration)
+- Custom output path and filename
 - Progress tracking
 
 #### URL Extraction Tab
 - Enter video URLs from supported platforms
 - Same format and quality options
+- Time range extraction support
+- Custom output path and filename
 - Download progress indication
 
 ## 🛠️ Development
@@ -157,7 +161,7 @@ pre-commit install
 ### Project Structure
 
 ```
-audio-extractor-ui/
+audio-extractor-gui/
 ├── src/
 │   ├── main.py                  # Application entry point
 │   └── audio_extractor_ui/
@@ -326,4 +330,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Made with ❤️ by [Your Name](https://github.com/yourusername)
+Made with ❤️ by [Steven Aubertin](https://github.com/stevenaubertin)
