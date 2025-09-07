@@ -3,7 +3,6 @@ Core functionality for audio extraction operations.
 Integrates with the audio-extractor submodule for actual processing.
 """
 
-import os
 import logging
 from pathlib import Path
 from typing import Optional, Dict, Any, List
@@ -16,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class AudioExtractor:
-    """Core audio extraction functionality using the audio-extractor submodule."""
+    """Core audio extraction functionality using audio-extractor submodule."""
 
     def __init__(self):
         """Initialize the audio extractor."""
@@ -28,13 +27,15 @@ class AudioExtractor:
         """Check if the core audio extractor is available."""
         return is_core_available()
 
-    def extract_from_file(self,
-                         input_file: str,
-                         output_format: str = "mp3",
-                         quality: str = "high",
-                         start_time: Optional[str] = None,
-                         end_time: Optional[str] = None,
-                         duration: Optional[str] = None) -> Dict[str, Any]:
+    def extract_from_file(
+        self,
+        input_file: str,
+        output_format: str = "mp3",
+        quality: str = "high",
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+        duration: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
         Extract audio from a local video file.
 
@@ -52,13 +53,16 @@ class AudioExtractor:
         logger.info(f"Extracting audio from: {input_file}")
 
         if not self.is_available():
-            error_msg = "Audio extractor core not available. Initialize submodule first."
+            error_msg = (
+                "Audio extractor core not available. "
+                "Initialize submodule first."
+            )
             logger.error(error_msg)
             return {
                 "success": False,
                 "error": error_msg,
                 "output": "",
-                "exit_code": -1
+                "exit_code": -1,
             }
 
         return self.core_extractor.extract_from_local_file(
@@ -68,16 +72,18 @@ class AudioExtractor:
             quality=quality,
             start_time=start_time,
             end_time=end_time,
-            duration=duration
+            duration=duration,
         )
 
-    def extract_from_url(self,
-                        url: str,
-                        output_format: str = "mp3",
-                        quality: str = "high",
-                        start_time: Optional[str] = None,
-                        end_time: Optional[str] = None,
-                        duration: Optional[str] = None) -> Dict[str, Any]:
+    def extract_from_url(
+        self,
+        url: str,
+        output_format: str = "mp3",
+        quality: str = "high",
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+        duration: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """
         Extract audio from a URL (YouTube, etc.).
 
@@ -95,13 +101,16 @@ class AudioExtractor:
         logger.info(f"Extracting audio from URL: {url}")
 
         if not self.is_available():
-            error_msg = "Audio extractor core not available. Initialize submodule first."
+            error_msg = (
+                "Audio extractor core not available. "
+                "Initialize submodule first."
+            )
             logger.error(error_msg)
             return {
                 "success": False,
                 "error": error_msg,
                 "output": "",
-                "exit_code": -1
+                "exit_code": -1,
             }
 
         return self.core_extractor.extract_from_url(
@@ -111,13 +120,12 @@ class AudioExtractor:
             quality=quality,
             start_time=start_time,
             end_time=end_time,
-            duration=duration
+            duration=duration,
         )
 
-    def batch_extract(self,
-                     input_dir: str,
-                     output_format: str = "mp3",
-                     quality: str = "high") -> Dict[str, Any]:
+    def batch_extract(
+        self, input_dir: str, output_format: str = "mp3", quality: str = "high"
+    ) -> Dict[str, Any]:
         """
         Perform batch audio extraction from a directory.
 
@@ -132,20 +140,23 @@ class AudioExtractor:
         logger.info(f"Batch extracting audio from directory: {input_dir}")
 
         if not self.is_available():
-            error_msg = "Audio extractor core not available. Initialize submodule first."
+            error_msg = (
+                "Audio extractor core not available. "
+                "Initialize submodule first."
+            )
             logger.error(error_msg)
             return {
                 "success": False,
                 "error": error_msg,
                 "output": "",
-                "exit_code": -1
+                "exit_code": -1,
             }
 
         return self.core_extractor.batch_extract(
             input_dir=input_dir,
             output_dir=str(self.output_dir),
             format=output_format,
-            quality=quality
+            quality=quality,
         )
 
     def check_dependencies(self) -> Dict[str, Any]:
@@ -157,8 +168,8 @@ class AudioExtractor:
                 "dependencies": {
                     "core_available": False,
                     "ffmpeg": "unknown",
-                    "yt-dlp": "unknown"
-                }
+                    "yt-dlp": "unknown",
+                },
             }
 
         return self.core_extractor.check_dependencies()
