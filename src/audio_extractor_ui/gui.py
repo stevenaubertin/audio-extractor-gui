@@ -32,7 +32,7 @@ class AudioExtractorGUI:
 
         self.root = tk.Tk()
         self.root.title("Audio Extractor UI")
-        self.root.geometry("650x550")
+        self.root.geometry("750x700")
 
         # Initialize core functionality
         self.extractor = AudioExtractor()
@@ -93,6 +93,38 @@ class AudioExtractorGUI:
             values=self.extractor.get_quality_options(),
         )
         quality_combo.pack(fill="x", pady=(0, 10))
+
+        # Time range controls
+        ttk.Label(parent, text="Time Range (optional):").pack(
+            anchor="w", pady=(10, 5)
+        )
+        
+        time_frame = ttk.Frame(parent)
+        time_frame.pack(fill="x", pady=(0, 5))
+        
+        # Start time
+        ttk.Label(time_frame, text="Start:").pack(side="left")
+        self.file_start_time_var = tk.StringVar()
+        start_entry = ttk.Entry(time_frame, textvariable=self.file_start_time_var, width=12)
+        start_entry.pack(side="left", padx=(5, 10))
+        
+        # End time
+        ttk.Label(time_frame, text="End:").pack(side="left")
+        self.file_end_time_var = tk.StringVar()
+        end_entry = ttk.Entry(time_frame, textvariable=self.file_end_time_var, width=12)
+        end_entry.pack(side="left", padx=(5, 10))
+        
+        # Duration
+        ttk.Label(time_frame, text="Duration:").pack(side="left")
+        self.file_duration_var = tk.StringVar()
+        duration_entry = ttk.Entry(time_frame, textvariable=self.file_duration_var, width=12)
+        duration_entry.pack(side="left", padx=(5, 0))
+        
+        # Help text for time formats
+        ttk.Label(
+            parent, 
+            text="Format: HH:MM:SS, MM:SS, or seconds (e.g., 1:30, 90.5). Use End OR Duration, not both."
+        ).pack(anchor="w", pady=(0, 10))
 
         # Output path selection
         ttk.Label(parent, text="Output Path (optional):").pack(
@@ -160,6 +192,38 @@ class AudioExtractorGUI:
         )
         quality_combo.pack(fill="x", pady=(0, 10))
 
+        # Time range controls
+        ttk.Label(parent, text="Time Range (optional):").pack(
+            anchor="w", pady=(10, 5)
+        )
+        
+        url_time_frame = ttk.Frame(parent)
+        url_time_frame.pack(fill="x", pady=(0, 5))
+        
+        # Start time
+        ttk.Label(url_time_frame, text="Start:").pack(side="left")
+        self.url_start_time_var = tk.StringVar()
+        url_start_entry = ttk.Entry(url_time_frame, textvariable=self.url_start_time_var, width=12)
+        url_start_entry.pack(side="left", padx=(5, 10))
+        
+        # End time
+        ttk.Label(url_time_frame, text="End:").pack(side="left")
+        self.url_end_time_var = tk.StringVar()
+        url_end_entry = ttk.Entry(url_time_frame, textvariable=self.url_end_time_var, width=12)
+        url_end_entry.pack(side="left", padx=(5, 10))
+        
+        # Duration
+        ttk.Label(url_time_frame, text="Duration:").pack(side="left")
+        self.url_duration_var = tk.StringVar()
+        url_duration_entry = ttk.Entry(url_time_frame, textvariable=self.url_duration_var, width=12)
+        url_duration_entry.pack(side="left", padx=(5, 0))
+        
+        # Help text for time formats
+        ttk.Label(
+            parent, 
+            text="Format: HH:MM:SS, MM:SS, or seconds (e.g., 1:30, 90.5). Use End OR Duration, not both."
+        ).pack(anchor="w", pady=(0, 10))
+
         # Output path selection
         ttk.Label(parent, text="Output Path (optional):").pack(
             anchor="w", pady=(10, 5)
@@ -194,6 +258,35 @@ class AudioExtractorGUI:
         self.url_status = ttk.Label(parent, text="Ready")
         self.url_status.pack(anchor="w")
 
+    def validate_time_inputs(self, start_time, end_time, duration):
+        """Validate time range inputs.
+        
+        Returns:
+            tuple: (is_valid, error_message, cleaned_start, cleaned_end, cleaned_duration)
+        """
+        # Clean up empty strings
+        start_time = start_time.strip() if start_time else None
+        end_time = end_time.strip() if end_time else None
+        duration = duration.strip() if duration else None
+        
+        # Check for conflicting end time and duration
+        if end_time and duration:
+            return (False, "Please specify either End time OR Duration, not both.", None, None, None)
+        
+        # If end time or duration is specified, start time is required
+        if (end_time or duration) and not start_time:
+            return (False, "Start time is required when specifying End time or Duration.", None, None, None)
+        
+        # Basic format validation (more detailed validation happens in the core)
+        import re
+        time_pattern = r'^(?:\d{1,2}:)?\d{1,2}:\d{1,2}$|^\d+(?:\.\d+)?$'
+        
+        for time_val, name in [(start_time, "Start time"), (end_time, "End time"), (duration, "Duration")]:
+            if time_val and not re.match(time_pattern, time_val):
+                return (False, f"{name} format invalid. Use HH:MM:SS, MM:SS, or seconds.", None, None, None)
+        
+        return (True, None, start_time, end_time, duration)
+    
     def browse_file(self):
         """Open file browser dialog."""
         filetypes = [
@@ -300,9 +393,29 @@ class AudioExtractorGUI:
             ):
                 return
 
+        # Validate time inputs
+        is_valid, error_msg, start_time, end_time, duration = self.validate_time_inputs(
+            self.file_start_time_var.get(),
+            self.file_end_time_var.get(),
+            self.file_duration_var.get()
+        )
+        
+        if not is_valid:
+            messagebox.showerror("Time Range Error", error_msg)
+            return
+
         # Start extraction
         self.file_progress.start()
-        self.file_status.config(text="Extracting audio...")
+        status_text = "Extracting audio"
+        if start_time:
+            if end_time:
+                status_text += f" from {start_time} to {end_time}"
+            elif duration:
+                status_text += f" from {start_time} for {duration}"
+            else:
+                status_text += f" starting from {start_time}"
+        status_text += "..."
+        self.file_status.config(text=status_text)
 
         try:
             # Get custom output path
@@ -329,7 +442,12 @@ class AudioExtractorGUI:
 
                 # For custom paths, we'll handle the naming manually
                 result = temp_extractor.extract_from_file(
-                    file_path, self.format_var.get(), self.quality_var.get()
+                    file_path, 
+                    self.format_var.get(), 
+                    self.quality_var.get(),
+                    start_time=start_time,
+                    end_time=end_time,
+                    duration=duration
                 )
 
                 final_output_path = str(output_path)
@@ -337,7 +455,12 @@ class AudioExtractorGUI:
                 # Use default behavior - let core module handle everything
                 temp_extractor = AudioExtractor()
                 result = temp_extractor.extract_from_file(
-                    file_path, self.format_var.get(), self.quality_var.get()
+                    file_path, 
+                    self.format_var.get(), 
+                    self.quality_var.get(),
+                    start_time=start_time,
+                    end_time=end_time,
+                    duration=duration
                 )
                 final_output_path = "output directory"
 
@@ -353,6 +476,8 @@ class AudioExtractorGUI:
                     error_msg += f": {result['error']}"
                 messagebox.showerror("Error", error_msg)
                 self.file_status.config(text="Extraction failed")
+
+        except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
             self.file_status.config(text="Error occurred")
 
@@ -373,9 +498,29 @@ class AudioExtractorGUI:
             ):
                 return
 
+        # Validate time inputs
+        is_valid, error_msg, start_time, end_time, duration = self.validate_time_inputs(
+            self.url_start_time_var.get(),
+            self.url_end_time_var.get(),
+            self.url_duration_var.get()
+        )
+        
+        if not is_valid:
+            messagebox.showerror("Time Range Error", error_msg)
+            return
+
         # Start extraction
         self.url_progress.start()
-        self.url_status.config(text="Downloading and extracting audio...")
+        status_text = "Downloading and extracting audio"
+        if start_time:
+            if end_time:
+                status_text += f" from {start_time} to {end_time}"
+            elif duration:
+                status_text += f" from {start_time} for {duration}"
+            else:
+                status_text += f" starting from {start_time}"
+        status_text += "..."
+        self.url_status.config(text=status_text)
 
         try:
             # Get custom output path
@@ -401,7 +546,12 @@ class AudioExtractorGUI:
                 temp_extractor.output_dir = output_path.parent
 
                 result = temp_extractor.extract_from_url(
-                    url, self.url_format_var.get(), self.url_quality_var.get()
+                    url, 
+                    self.url_format_var.get(), 
+                    self.url_quality_var.get(),
+                    start_time=start_time,
+                    end_time=end_time,
+                    duration=duration
                 )
 
                 final_output_path = str(output_path)
@@ -409,7 +559,12 @@ class AudioExtractorGUI:
                 # Use default behavior - let core module handle everything
                 temp_extractor = AudioExtractor()
                 result = temp_extractor.extract_from_url(
-                    url, self.url_format_var.get(), self.url_quality_var.get()
+                    url, 
+                    self.url_format_var.get(), 
+                    self.url_quality_var.get(),
+                    start_time=start_time,
+                    end_time=end_time,
+                    duration=duration
                 )
                 final_output_path = "output directory"
 
@@ -425,6 +580,8 @@ class AudioExtractorGUI:
                     error_msg += f": {result['error']}"
                 messagebox.showerror("Error", error_msg)
                 self.url_status.config(text="Extraction failed")
+
+        except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
             self.url_status.config(text="Error occurred")
 
