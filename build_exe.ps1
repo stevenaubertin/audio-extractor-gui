@@ -140,8 +140,8 @@ function New-ReleasePackage {
         return $false
     }
     
-    # Copy documentation
-    $filesToCopy = @("README.md", "LICENSE")
+    # Copy documentation and installation helpers
+    $filesToCopy = @("README.md", "LICENSE", "install_ffmpeg.ps1", "install_ffmpeg.bat", "QUICK_START.md")
     foreach ($file in $filesToCopy) {
         if (Test-Path $file) {
             Copy-Item $file "$OutputDir/$file"
@@ -162,7 +162,22 @@ function New-ReleasePackage {
 
 ## Requirements:
 - FFmpeg must be installed and available in PATH for audio extraction
-- Download FFmpeg from: https://ffmpeg.org/download.html
+
+## FFmpeg Installation:
+Easy installation options provided:
+
+1. **Automated Installation (Recommended):**
+   - Double-click: install_ffmpeg.bat
+   - Or run: install_ffmpeg.ps1 in PowerShell
+
+2. **Manual Installation:**
+   - Download FFmpeg from: https://ffmpeg.org/download.html
+   - Extract and add to system PATH
+
+3. **Package Managers:**
+   - Chocolatey: choco install ffmpeg
+   - Scoop: scoop install ffmpeg
+   - Winget: winget install Gyan.FFmpeg
 
 ## Features:
 - Extract audio from local video files

@@ -103,8 +103,8 @@ def create_release_package():
         print(f"   ❌ Executable not found: {exe_path}")
         return False
     
-    # Copy documentation
-    files_to_copy = ["README.md", "LICENSE"]
+    # Copy documentation and installation helpers
+    files_to_copy = ["README.md", "LICENSE", "install_ffmpeg.ps1", "install_ffmpeg.bat", "QUICK_START.md"]
     for file_name in files_to_copy:
         if os.path.exists(file_name):
             shutil.copy2(file_name, release_dir / file_name)
@@ -122,7 +122,22 @@ def create_release_package():
 
 ## Requirements:
 - FFmpeg must be installed and available in PATH for audio extraction
-- Download FFmpeg from: https://ffmpeg.org/download.html
+
+## FFmpeg Installation:
+Easy installation options provided:
+
+1. **Automated Installation (Recommended):**
+   - Double-click: install_ffmpeg.bat
+   - Or run: install_ffmpeg.ps1 in PowerShell
+
+2. **Manual Installation:**
+   - Download FFmpeg from: https://ffmpeg.org/download.html
+   - Extract and add to system PATH
+
+3. **Package Managers:**
+   - Chocolatey: choco install ffmpeg
+   - Scoop: scoop install ffmpeg
+   - Winget: winget install Gyan.FFmpeg
 
 ## Features:
 - Extract audio from local video files
