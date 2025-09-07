@@ -1,0 +1,3 @@
+[submodule "audio-extractor"]
+	path = audio-extractor
+	url = https://github.com/stevenaubertin/audio-extractor.git

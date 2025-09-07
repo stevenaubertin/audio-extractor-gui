@@ -1,0 +1,98 @@
+{
+  "folders": [
+    {
+      "name": "Audio Extractor UI",
+      "path": "."
+    }
+  ],
+  "settings": {
+    // Workspace-specific Python settings
+    "python.defaultInterpreterPath": "./venv/Scripts/python.exe",
+    "python.analysis.extraPaths": [
+      "./src"
+    ],
+    "terminal.integrated.env.windows": {
+      "PYTHONPATH": "${workspaceFolder}/src"
+    },
+    
+    // File associations
+    "files.associations": {
+      "*.py": "python",
+      "*.pyi": "python",
+      ".flake8": "ini",
+      ".coveragerc": "ini",
+      "pyproject.toml": "toml",
+      "requirements*.txt": "pip-requirements"
+    },
+    
+    // Workspace layout
+    "workbench.tree.indent": 12,
+    "workbench.tree.renderIndentGuides": "always",
+    
+    // Editor
+    "editor.rulers": [88],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+      "ms-python.black-formatter",
+      "ms-python.flake8",
+      "ms-python.mypy-type-checker",
+      "ryanluker.vscode-coverage-gutters",
+      "eamodio.gitlens"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Audio Extractor UI - Main",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/src/main.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/src"
+        }
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Tests",
+        "type": "shell",
+        "command": "python",
+        "args": ["-m", "pytest", "tests/", "-v"],
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "clear": true
+        }
+      },
+      {
+        "label": "Build Project",
+        "type": "shell",
+        "command": "python",
+        "args": ["scripts/build.py"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "clear": true
+        }
+      }
+    ]
+  }
+}
