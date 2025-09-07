@@ -32,7 +32,7 @@ class AudioExtractorGUI:
 
         self.root = tk.Tk()
         self.root.title("Audio Extractor UI")
-        self.root.geometry("700x600")
+        self.root.geometry("650x550")
 
         # Initialize core functionality
         self.extractor = AudioExtractor()
@@ -94,40 +94,27 @@ class AudioExtractorGUI:
         )
         quality_combo.pack(fill="x", pady=(0, 10))
 
-        # Output directory selection
-        ttk.Label(parent, text="Output Directory:").pack(
+        # Output path selection
+        ttk.Label(parent, text="Output Path (optional):").pack(
             anchor="w", pady=(10, 5)
         )
 
-        output_dir_frame = ttk.Frame(parent)
-        output_dir_frame.pack(fill="x", pady=(0, 10))
+        output_path_frame = ttk.Frame(parent)
+        output_path_frame.pack(fill="x", pady=(0, 10))
 
-        self.file_output_dir_var = tk.StringVar(value="output")
+        self.file_output_path_var = tk.StringVar()
         ttk.Entry(
-            output_dir_frame, textvariable=self.file_output_dir_var
+            output_path_frame, textvariable=self.file_output_path_var
         ).pack(side="left", fill="x", expand=True, padx=(0, 5))
         ttk.Button(
-            output_dir_frame,
+            output_path_frame,
             text="Browse",
-            command=self.browse_output_dir_file,
+            command=self.browse_output_path_file,
         ).pack(side="right")
 
-        # Output filename
-        ttk.Label(parent, text="Output Filename (optional):").pack(
-            anchor="w", pady=(10, 5)
-        )
-
-        filename_frame = ttk.Frame(parent)
-        filename_frame.pack(fill="x", pady=(0, 10))
-
-        self.file_output_name_var = tk.StringVar()
-        ttk.Entry(filename_frame, textvariable=self.file_output_name_var).pack(
-            side="left", fill="x", expand=True, padx=(0, 5)
-        )
-
-        ttk.Label(filename_frame, text="(leave empty for auto)").pack(
-            side="right", anchor="e"
-        )
+        ttk.Label(
+            parent, text="(leave empty for auto: output/filename.ext)"
+        ).pack(anchor="w", pady=(0, 10))
 
         # Extract button
         ttk.Button(
@@ -173,40 +160,27 @@ class AudioExtractorGUI:
         )
         quality_combo.pack(fill="x", pady=(0, 10))
 
-        # Output directory selection
-        ttk.Label(parent, text="Output Directory:").pack(
+        # Output path selection
+        ttk.Label(parent, text="Output Path (optional):").pack(
             anchor="w", pady=(10, 5)
         )
 
-        url_output_dir_frame = ttk.Frame(parent)
-        url_output_dir_frame.pack(fill="x", pady=(0, 10))
+        url_output_path_frame = ttk.Frame(parent)
+        url_output_path_frame.pack(fill="x", pady=(0, 10))
 
-        self.url_output_dir_var = tk.StringVar(value="output")
+        self.url_output_path_var = tk.StringVar()
         ttk.Entry(
-            url_output_dir_frame, textvariable=self.url_output_dir_var
+            url_output_path_frame, textvariable=self.url_output_path_var
         ).pack(side="left", fill="x", expand=True, padx=(0, 5))
         ttk.Button(
-            url_output_dir_frame,
+            url_output_path_frame,
             text="Browse",
-            command=self.browse_output_dir_url,
+            command=self.browse_output_path_url,
         ).pack(side="right")
 
-        # Output filename
-        ttk.Label(parent, text="Output Filename (optional):").pack(
-            anchor="w", pady=(10, 5)
-        )
-
-        url_filename_frame = ttk.Frame(parent)
-        url_filename_frame.pack(fill="x", pady=(0, 10))
-
-        self.url_output_name_var = tk.StringVar()
-        ttk.Entry(
-            url_filename_frame, textvariable=self.url_output_name_var
-        ).pack(side="left", fill="x", expand=True, padx=(0, 5))
-
-        ttk.Label(url_filename_frame, text="(leave empty for auto)").pack(
-            side="right", anchor="e"
-        )
+        ttk.Label(
+            parent, text="(leave empty for auto: output/filename.ext)"
+        ).pack(anchor="w", pady=(0, 10))
 
         # Extract button
         ttk.Button(
@@ -236,30 +210,74 @@ class AudioExtractorGUI:
 
         if filename:
             self.file_path_var.set(filename)
-            # Auto-populate output filename if empty
-            if not self.file_output_name_var.get():
+            # Auto-populate output path if empty
+            if not self.file_output_path_var.get():
                 input_path = Path(filename)
-                self.file_output_name_var.set(input_path.stem)
+                format_ext = self.format_var.get()
+                suggested_path = (
+                    Path("output") / f"{input_path.stem}.{format_ext}"
+                )
+                self.file_output_path_var.set(str(suggested_path))
 
-    def browse_output_dir_file(self):
-        """Open directory browser dialog for file tab output."""
-        directory = filedialog.askdirectory(
-            title="Select Output Directory",
-            initialdir=self.file_output_dir_var.get(),
+    def browse_output_path_file(self):
+        """Open save file dialog for file tab output path."""
+        # Get current path or suggest one
+        current_path = self.file_output_path_var.get()
+        if current_path:
+            initial_dir = str(Path(current_path).parent)
+            initial_file = Path(current_path).name
+        else:
+            initial_dir = "output"
+            initial_file = "audio.mp3"
+
+        # File types based on supported formats
+        filetypes = [
+            ("MP3 files", "*.mp3"),
+            ("WAV files", "*.wav"),
+            ("FLAC files", "*.flac"),
+            ("AAC files", "*.aac"),
+            ("All files", "*.*"),
+        ]
+
+        filepath = filedialog.asksaveasfilename(
+            title="Save Audio As",
+            initialdir=initial_dir,
+            initialfile=initial_file,
+            filetypes=filetypes,
         )
 
-        if directory:
-            self.file_output_dir_var.set(directory)
+        if filepath:
+            self.file_output_path_var.set(filepath)
 
-    def browse_output_dir_url(self):
-        """Open directory browser dialog for URL tab output."""
-        directory = filedialog.askdirectory(
-            title="Select Output Directory",
-            initialdir=self.url_output_dir_var.get(),
+    def browse_output_path_url(self):
+        """Open save file dialog for URL tab output path."""
+        # Get current path or suggest one
+        current_path = self.url_output_path_var.get()
+        if current_path:
+            initial_dir = str(Path(current_path).parent)
+            initial_file = Path(current_path).name
+        else:
+            initial_dir = "output"
+            initial_file = "audio.mp3"
+
+        # File types based on supported formats
+        filetypes = [
+            ("MP3 files", "*.mp3"),
+            ("WAV files", "*.wav"),
+            ("FLAC files", "*.flac"),
+            ("AAC files", "*.aac"),
+            ("All files", "*.*"),
+        ]
+
+        filepath = filedialog.asksaveasfilename(
+            title="Save Audio As",
+            initialdir=initial_dir,
+            initialfile=initial_file,
+            filetypes=filetypes,
         )
 
-        if directory:
-            self.url_output_dir_var.set(directory)
+        if filepath:
+            self.url_output_path_var.set(filepath)
 
     def extract_from_file(self):
         """Extract audio from selected file."""
@@ -287,36 +305,46 @@ class AudioExtractorGUI:
         self.file_status.config(text="Extracting audio...")
 
         try:
-            # Get custom output settings
-            output_dir = self.file_output_dir_var.get().strip() or "output"
-            custom_filename = self.file_output_name_var.get().strip()
+            # Get custom output path
+            custom_output_path = self.file_output_path_var.get().strip()
             format_ext = self.format_var.get()
 
-            # Create output directory if it doesn't exist
-            Path(output_dir).mkdir(parents=True, exist_ok=True)
+            if custom_output_path:
+                # Use the specified output path
+                output_path = Path(custom_output_path)
 
-            # Prepare filename
-            if custom_filename:
-                # Sanitize custom filename and ensure proper extension
-                safe_filename = sanitize_filename(custom_filename)
-                if not safe_filename.endswith(f".{format_ext}"):
-                    safe_filename += f".{format_ext}"
-                output_path = str(Path(output_dir) / safe_filename)
+                # Ensure proper extension
+                if (
+                    not output_path.suffix
+                    or output_path.suffix[1:] != format_ext
+                ):
+                    output_path = output_path.with_suffix(f".{format_ext}")
+
+                # Create directory if it doesn't exist
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+
+                # Use custom output directory and filename
+                temp_extractor = AudioExtractor()
+                temp_extractor.output_dir = output_path.parent
+
+                # For custom paths, we'll handle the naming manually
+                result = temp_extractor.extract_from_file(
+                    file_path, self.format_var.get(), self.quality_var.get()
+                )
+
+                final_output_path = str(output_path)
             else:
-                output_path = None  # Let core module handle auto-naming
-
-            # Create a temporary AudioExtractor with custom output directory
-            temp_extractor = AudioExtractor()
-            temp_extractor.output_dir = Path(output_dir)
-
-            result = temp_extractor.extract_from_file(
-                file_path, self.format_var.get(), self.quality_var.get()
-            )
+                # Use default behavior - let core module handle everything
+                temp_extractor = AudioExtractor()
+                result = temp_extractor.extract_from_file(
+                    file_path, self.format_var.get(), self.quality_var.get()
+                )
+                final_output_path = "output directory"
 
             if isinstance(result, dict) and result.get("success", False):
                 success_msg = "Audio extraction completed successfully!"
-                if output_dir != "output":
-                    success_msg += f"\nSaved to: {output_dir}"
+                if custom_output_path:
+                    success_msg += f"\nSaved to: {final_output_path}"
                 messagebox.showinfo("Success", success_msg)
                 self.file_status.config(text="Extraction completed")
             else:
@@ -325,8 +353,6 @@ class AudioExtractorGUI:
                     error_msg += f": {result['error']}"
                 messagebox.showerror("Error", error_msg)
                 self.file_status.config(text="Extraction failed")
-
-        except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
             self.file_status.config(text="Error occurred")
 
@@ -352,26 +378,45 @@ class AudioExtractorGUI:
         self.url_status.config(text="Downloading and extracting audio...")
 
         try:
-            # Get custom output settings
-            output_dir = self.url_output_dir_var.get().strip() or "output"
-            custom_filename = self.url_output_name_var.get().strip()
+            # Get custom output path
+            custom_output_path = self.url_output_path_var.get().strip()
             format_ext = self.url_format_var.get()
 
-            # Create output directory if it doesn't exist
-            Path(output_dir).mkdir(parents=True, exist_ok=True)
+            if custom_output_path:
+                # Use the specified output path
+                output_path = Path(custom_output_path)
 
-            # Create a temporary AudioExtractor with custom output directory
-            temp_extractor = AudioExtractor()
-            temp_extractor.output_dir = Path(output_dir)
+                # Ensure proper extension
+                if (
+                    not output_path.suffix
+                    or output_path.suffix[1:] != format_ext
+                ):
+                    output_path = output_path.with_suffix(f".{format_ext}")
 
-            result = temp_extractor.extract_from_url(
-                url, self.url_format_var.get(), self.url_quality_var.get()
-            )
+                # Create directory if it doesn't exist
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+
+                # Use custom output directory
+                temp_extractor = AudioExtractor()
+                temp_extractor.output_dir = output_path.parent
+
+                result = temp_extractor.extract_from_url(
+                    url, self.url_format_var.get(), self.url_quality_var.get()
+                )
+
+                final_output_path = str(output_path)
+            else:
+                # Use default behavior - let core module handle everything
+                temp_extractor = AudioExtractor()
+                result = temp_extractor.extract_from_url(
+                    url, self.url_format_var.get(), self.url_quality_var.get()
+                )
+                final_output_path = "output directory"
 
             if isinstance(result, dict) and result.get("success", False):
                 success_msg = "Audio extraction completed successfully!"
-                if output_dir != "output":
-                    success_msg += f"\nSaved to: {output_dir}"
+                if custom_output_path:
+                    success_msg += f"\nSaved to: {final_output_path}"
                 messagebox.showinfo("Success", success_msg)
                 self.url_status.config(text="Extraction completed")
             else:
@@ -380,8 +425,6 @@ class AudioExtractorGUI:
                     error_msg += f": {result['error']}"
                 messagebox.showerror("Error", error_msg)
                 self.url_status.config(text="Extraction failed")
-
-        except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
             self.url_status.config(text="Error occurred")
 
