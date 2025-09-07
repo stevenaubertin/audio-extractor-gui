@@ -324,12 +324,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [FFmpeg](https://ffmpeg.org/) - For audio/video processing
 - [tkinter](https://docs.python.org/3/library/tkinter.html) - For GUI framework
 
-## 🐛 Issues and Support
-
-- **Bug reports:** [GitHub Issues](https://github.com/yourusername/audio-extractor-ui/issues)
-- **Feature requests:** [GitHub Issues](https://github.com/yourusername/audio-extractor-ui/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/audio-extractor-ui/discussions)
-
 ---
 
 Made with ❤️ by [Your Name](https://github.com/yourusername)
