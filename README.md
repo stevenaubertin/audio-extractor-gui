@@ -27,6 +27,7 @@ A modern, user-friendly interface for extracting audio from videos using ffmpeg 
 #### Installing FFmpeg
 
 **Windows:**
+
 ```powershell
 # Using chocolatey
 choco install ffmpeg
@@ -36,11 +37,13 @@ winget install Gyan.FFmpeg
 ```
 
 **macOS:**
+
 ```bash
 brew install ffmpeg
 ```
 
 **Linux:**
+
 ```bash
 sudo apt update
 sudo apt install ffmpeg
@@ -49,34 +52,40 @@ sudo apt install ffmpeg
 ### Installation
 
 1. **Clone the repository with submodules:**
+
 ```bash
 git clone --recursive https://github.com/stevenaubertin/audio-extractor-gui.git
 cd audio-extractor-gui
 ```
 
-   **Or if you already cloned without `--recursive`:**
-   ```bash
-   git submodule update --init --recursive
-   ```
+**Or if you already cloned without `--recursive`:**
+
+```bash
+git submodule update --init --recursive
+```
 
 2. **Activate the environment** (choose your platform):
 
 **Windows PowerShell:**
+
 ```powershell
 .\activate.ps1
 ```
 
 **Windows Command Prompt:**
+
 ```cmd
 activate.bat
 ```
 
 **macOS/Linux:**
+
 ```bash
 source activate.sh
 ```
 
 That's it! The activation script will:
+
 - ✅ Create the virtual environment if it doesn't exist
 - ✅ Activate the virtual environment
 - ✅ Install all required dependencies
@@ -87,11 +96,13 @@ That's it! The activation script will:
 ### GUI Mode (Default)
 
 Launch the graphical interface:
+
 ```bash
 python src/main.py
 ```
 
 Or simply:
+
 ```bash
 python src/main.py --gui
 ```
@@ -99,6 +110,7 @@ python src/main.py --gui
 ### CLI Mode
 
 Use the command-line interface:
+
 ```bash
 python src/main.py --cli
 ```
@@ -106,11 +118,13 @@ python src/main.py --cli
 ### Core CLI Mode (Direct Access)
 
 Access the original audio-extractor CLI directly:
+
 ```bash
 python src/main.py --core-cli
 ```
 
 Example core CLI usage:
+
 ```bash
 # Extract audio from local file
 python src/main.py --core-cli --format mp3 --quality high local "video.mp4"
@@ -128,6 +142,7 @@ python src/main.py --core-cli check-dependencies
 ### Features Overview
 
 #### File Extraction Tab
+
 - Browse and select local video files
 - Choose output format (MP3, WAV, FLAC, AAC)
 - Select quality settings
@@ -136,6 +151,7 @@ python src/main.py --core-cli check-dependencies
 - Progress tracking
 
 #### URL Extraction Tab
+
 - Enter video URLs from supported platforms
 - Same format and quality options
 - Time range extraction support
@@ -149,11 +165,13 @@ python src/main.py --core-cli check-dependencies
 1. **Clone and activate** (as shown above)
 
 2. **Install development dependencies:**
+
 ```bash
 pip install -r requirements-dev.txt
 ```
 
 3. **Install pre-commit hooks:**
+
 ```bash
 pre-commit install
 ```
@@ -198,36 +216,43 @@ audio-extractor-gui/
 ### Development Commands
 
 **Run tests:**
+
 ```bash
 pytest
 ```
 
 **Run tests with coverage:**
+
 ```bash
 pytest --cov=src --cov-report=html
 ```
 
 **Format code:**
+
 ```bash
 black src tests
 ```
 
 **Sort imports:**
+
 ```bash
 isort src tests
 ```
 
 **Lint code:**
+
 ```bash
 flake8 src tests
 ```
 
 **Type checking:**
+
 ```bash
 mypy src
 ```
 
 **Run all quality checks:**
+
 ```bash
 pre-commit run --all-files
 ```
@@ -237,16 +262,19 @@ pre-commit run --all-files
 The project includes convenient activation scripts for all platforms:
 
 **Activate environment:**
+
 - Windows PowerShell: `.\activate.ps1`
 - Windows CMD: `activate.bat`
 - macOS/Linux: `source activate.sh`
 
 **Deactivate environment:**
+
 ```bash
 deactivate
 ```
 
 **Recreate environment:**
+
 ```bash
 # Remove existing environment
 rm -rf venv
@@ -281,16 +309,19 @@ pytest --looponfail
 ## 📦 Building and Distribution
 
 **Build the package:**
+
 ```bash
 python -m build
 ```
 
 **Install in development mode:**
+
 ```bash
 pip install -e .
 ```
 
 **Install with optional dependencies:**
+
 ```bash
 pip install -e .[dev]
 ```
@@ -327,7 +358,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) - For video downloading capabilities
 - [FFmpeg](https://ffmpeg.org/) - For audio/video processing
 - [tkinter](https://docs.python.org/3/library/tkinter.html) - For GUI framework
-
----
-
-Made with ❤️ by [Steven Aubertin](https://github.com/stevenaubertin)
